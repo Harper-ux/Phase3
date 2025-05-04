@@ -57,7 +57,7 @@ namespace RestaurantManagementSystem
             Console.WriteLine("Or edit menu items for users"); // prompt for user input
             var menu = Console.ReadLine(); //saves the user input to the variable menu
 
-            string query = "INSERT INTO Reservations(FirstName, LastName, Email, Phone) VALUES (@FirstName, @LastName, @Email, @Phone)"; //query to insert customer information into the database
+            string query = "INSERT INTO Reservations(FirstName, LastName, Email, Phone, OrderdetailsID) VALUES (@FirstName, @LastName, @Email, @Phone, @OrderDetailsID)"; //query to insert customer information into the database
 
             using (SqlConnection conn = new SqlConnection(connectionString)) //using the connection string to connect to the database
             {
@@ -68,18 +68,8 @@ namespace RestaurantManagementSystem
                 cmd.Parameters.AddWithValue("@Phone", phone); //adding parameters to the command
 
                 conn.Open(); //open the connection to the database
-                cmd.ExecuteNonQuery(); //execute the command
+                int someIdValue = 1; // Example: Assign a default or dynamically generated value
                 Console.WriteLine("Customer Added Successfully!"); //confirmation message
-            }
-            Console.WriteLine("Do you want to add another customer? (y/n)"); // prompt for user input
-            var addAnother = Console.ReadLine(); // saves the user input to the variable addAnother
-            if (addAnother.ToLower() == "y") // if the user wants to add another customer 
-            {
-                RestAdmin(); // recursive call to add another customer
-            }
-            else // if the user does not want to add another customer 
-            {
-                Console.WriteLine("Returning to main menu..."); // confirmation message
             }
             Console.WriteLine("Do you want to view all customers? (y/n)"); // prompt for user input
             var viewAll = Console.ReadLine(); // saves the user input to the variable viewAll
@@ -227,14 +217,13 @@ namespace RestaurantManagementSystem
                 using (SqlConnection conn = new SqlConnection(connectionString)) // using the connection string to connect to the database
                 {
                     SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@OrderDetails", order); //adding parameters to the command
                     conn.Open();
 
                     int someIdValue = 1; // Example: Assign a default or dynamically generated value
                     cmd.Parameters.AddWithValue("@id", someIdValue);
                     // Replace 'someIdValue' with a valid value or variable
                    
-                    cmd.Parameters.AddWithValue("@id", someIdValue);
+                    cmd.Parameters.AddWithValue("@id", someIdValue); // Remove the second occurrence
                     cmd.Parameters.AddWithValue("@Ordersid", order);
                     cmd.ExecuteNonQuery();
                     Console.WriteLine("Order processed successfully!"); //confirmation message
